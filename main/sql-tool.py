@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Nov 04 20:47:00 2017
+
+@author: lingyu
+"""
+
 import argparse
 import readline
 
@@ -9,6 +16,7 @@ def command_tool_mode():
 
 def volatility(files):
     if len(files) < 2: print "Required at least two files"
+    
 
 def initialize():
     print "init"
@@ -30,7 +38,8 @@ def main():
                        help='create sqlite file and configuration file',
                        required=False)
     group.add_argument('-vol', nargs='*',
-                       help='volatility of files with same structure. tips: -vol file1 ,file2, [file3, ...]',
+                       help='''volatility of files with same structure. 
+                       tips: -vol file1 ,file2, [file3, ...]''',
                        required=False)
 
     # parse args
