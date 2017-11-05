@@ -5,6 +5,8 @@ Created on Sat Nov 04 20:47:00 2017
 @author: lingyu
 """
 
+from scripts import sqliteTool
+
 import argparse
 import readline
 
@@ -13,6 +15,7 @@ def command_tool_mode():
         input = raw_input("command >> ")
         if input in ['exit','exit()']:
             break
+        sqliteTool.dealWithCommand()
 
 def volatility(files):
     if len(files) < 2: print "Required at least two files"
