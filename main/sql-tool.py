@@ -1,10 +1,8 @@
 import argparse
 
-def provide_help():
-    print "provide help"
-
 def command_tool_mode():
-    print "command tool mode"
+    while 1:
+        input = raw_input("command >> ")
 
 def main():
     # create parser
@@ -17,11 +15,20 @@ def main():
     group = parser.add_mutually_exclusive_group()
     
     # add expected arguments
-    group.add_argument('--help',action="provide_help", required=False)
-    group.add_argument('--s', action="command_tool_mode", required=False)
+    group.add_argument('-s', action="store_true",
+                       help="shell mode",required=False)
+    # group.add_argument('--s', action="command_tool_mode", required=False)
     
     # parse args
     args = parser.parse_args()
+    
+    if args.s:
+        try:
+            command_tool_mode()
+        except KeyboardInterrupt:
+            print("Goodbye~")
+    else:
+        parser.print_help()
     
 
 
