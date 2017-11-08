@@ -5,13 +5,12 @@ Created on Sat Nov 04 20:47:00 2017
 @author: lingyu
 """
 
-from scripts import sqliteTool,commandTool
+from scripts import commandTool
 from scripts import utils
 from datetime import datetime
 
 import argparse
 import readline
-
 
 # DEBUG_MODE will clear cache before the program runs
 DEBUG_MODE = True
@@ -30,9 +29,6 @@ def volatility(files):
         output_file_name = 'result_' + datetime.now().strftime('%Y%m%d%H%M%S') + '.txt'
     utils.genVol(files,output_file_name)
     
-def initialize():
-    print("init")
-
 def main():
     # create parser
     descStr = """
@@ -46,9 +42,6 @@ def main():
     # add expected arguments
     group.add_argument('-s', action='store_true', 
                        help='shell mode',required=False)
-    group.add_argument('-init',action='store_true',
-                       help='create sqlite file and configuration file',
-                       required=False)
     group.add_argument('-vol', nargs='*',
                        help='''volatility of files with same structure. 
                        tips: -vol file1 ,file2, [file3, ...]''',
@@ -64,15 +57,13 @@ def main():
             print("\n"+ "Goodbye".center(50,'='))
     elif args.vol:
         volatility(args.vol)
-    elif args.init:
-        initialize()
     else:
         parser.print_help()
     
 
 if __name__ == '__main__':
     # if debug mode is True, clear cache first everytime
-    if DEBUG_MODE == True:
+    if DEBUG_MODE:
         utils.clearCache()
     main()
 
