@@ -5,24 +5,33 @@ Created on Sat Nov 04 20:47:00 2017
 @author: lingyu
 """
 
-from scripts import sqliteTool
+from scripts import sqliteTool,commandTool
+from scripts import utils
+from datetime import datetime
 
 import argparse
 import readline
 
-def command_tool_mode():
+
+# DEBUG_MODE will clear cache before the program runs
+DEBUG_MODE = True
+
+def commandToolMode():
     while 1:
-        input = raw_input("command >> ")
-        if input in ['exit','exit()']:
+        command = input("command >> ")
+        if command in ['exit','exit()']:
             break
-        sqliteTool.dealWithCommand()
+        commandTool.dealWithCommand(command)
 
 def volatility(files):
-    if len(files) < 2: print "Required at least two files"
+    if len(files) < 2: print("PROMOT: Required at least two files")
+    output_file_name = input("Result file name (default: result_yyyymmddhhmmss.txt): ")
+    if output_file_name == '':
+        output_file_name = 'result_' + datetime.now().strftime('%Y%m%d%H%M%S') + '.txt'
+    utils.genVol(files,output_file_name)
     
-
 def initialize():
-    print "init"
+    print("init")
 
 def main():
     # create parser
@@ -50,9 +59,9 @@ def main():
     
     if args.s:
         try:
-            command_tool_mode()
+            commandToolMode()
         except KeyboardInterrupt:
-            print("Goodbye~")
+            print("\n"+ "Goodbye".center(50,'='))
     elif args.vol:
         volatility(args.vol)
     elif args.init:
@@ -62,5 +71,8 @@ def main():
     
 
 if __name__ == '__main__':
+    # if debug mode is True, clear cache first everytime
+    if DEBUG_MODE == True:
+        utils.clearCache()
     main()
 
