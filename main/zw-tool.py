@@ -6,21 +6,17 @@ Created on Sat Nov 04 20:47:00 2017
 """
 
 from scripts import commandTool
+from scripts import sqliteUtils
 from scripts import utils
+
 from datetime import datetime
 
 import argparse
+import configparser
 import readline
 
 # DEBUG_MODE will clear cache before the program runs
 DEBUG_MODE = True
-
-def commandToolMode():
-    while 1:
-        command = input("command >> ")
-        if command in ['exit','exit()']:
-            break
-        commandTool.dealWithCommand(command)
 
 def volatility(files):
     if len(files) < 2: print("PROMOT: Required at least two files")
@@ -30,6 +26,7 @@ def volatility(files):
     utils.genVol(files,output_file_name)
     
 def main():
+    db_conn = sqliteUtils.initDB()
     # create parser
     descStr = """
     This program provides some helpful functions for ZW group in CM-GZ
@@ -46,24 +43,28 @@ def main():
                        help='''volatility of files with same structure. 
                        tips: -vol file1 ,file2, [file3, ...]''',
                        required=False)
+    group.add_argument('-load', nargs='*',
+                       help='load files to default sqlite database',
+                       required=False)
 
     # parse args
     args = parser.parse_args()
     
     if args.s:
         try:
-            commandToolMode()
+            commandTool.commandToolMode(db_conn)
         except KeyboardInterrupt:
+            db_conn.commit()
+            db_conn.close()
             print("\n"+ "Goodbye".center(50,'='))
     elif args.vol:
         volatility(args.vol)
     else:
         parser.print_help()
-    
 
 if __name__ == '__main__':
-    # if debug mode is True, clear cache first everytime
+    main()
+    # if debug mode is True, clear cache everytime
     if DEBUG_MODE:
         utils.clearCache()
-    main()
 

@@ -53,12 +53,10 @@ def checkout(files):
         print('filename: %s\nrows: %d' % (f, rows))
         for k in cols.keys():
             print('col: %d, count: %d' % (k, cols[k]))
-    
+
     print('checking finished...')
 
 def genVol(files, out_file_name):
-    flag_0 = checkout(files)
-    
 
     with open(out_file_name,'w') as fd:
         fd.write("Hello World")
