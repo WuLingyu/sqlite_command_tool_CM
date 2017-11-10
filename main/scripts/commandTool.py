@@ -10,6 +10,7 @@ from . import sqliteUtils
 import sqlite3
 
 def commandToolMode(db_conn):
+	# shell mode - entrance
 	sentinel = ';'
 	while 1:
 		commands = []
@@ -25,7 +26,7 @@ def commandToolMode(db_conn):
 		elif command[0] in ('@','.'):
 			dealWithCommand(db_conn, command)
 		elif command.find(';') != -1:
-			dealWithSQL(db_conn,command)
+			sqliteUtils.dealWithSQL(db_conn,command)
 		else:
 			commands.append(command)
 			input_new = partial(input, '\t... ')
@@ -34,9 +35,10 @@ def commandToolMode(db_conn):
 				if command.find(';') != -1:
 					break
 			command = ' '.join(commands)
-			dealWithSQL(db_conn,command)
+			sqliteUtils.dealWithSQL(db_conn,command)
 
 def dealWithCommand(conn, command):
+	# command dealer - entrance
 	if command[0] == '.':
 		sqliteUtils.dealInnerCommand(conn, command)
 	elif command[0] == '@':
@@ -45,12 +47,5 @@ def dealWithCommand(conn, command):
 		print('error: no such command')
 
 
-def dealWithSQL(conn, command):
-    c = conn.cursor()
-    try:
-    	cursor = c.execute(command)
-    	for row in cursor:
-    		print(row)
-    except Exception as e:
-    	print(repr(e))
+
 

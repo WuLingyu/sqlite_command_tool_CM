@@ -43,10 +43,7 @@ def main():
                        help='''volatility of files with same structure. 
                        tips: -vol file1 ,file2, [file3, ...]''',
                        required=False)
-    group.add_argument('-load', nargs='*',
-                       help='load files to default sqlite database',
-                       required=False)
-
+    
     # parse args
     args = parser.parse_args()
     
